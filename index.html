@@ -1,0 +1,939 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>📊 Probability & Complementary Events - رياضيات 11 عام | Mr. Mohammed Hesham</title>
+<meta name="description" content="امتحان تفاعلي عن الاحتمالات والأحداث المكملة - رياضيات 11 عام">
+<meta name="author" content="Mr. Mohammed Hesham">
+<script src="https://cdn.tailwindcss.com"></script>
+<script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;900&family=Inter:wght@400;600;700&family=Amiri:wght@400;700&display=swap" rel="stylesheet">
+<style>
+body { font-family: 'Cairo', sans-serif; background: linear-gradient(135deg, #dbeafe 0%, #bfdbfe 100%); }
+body.en-mode { font-family: 'Inter', sans-serif; }
+.arabic-math { font-family: 'Amiri', 'Cairo', serif; }
+.correct { background-color: #dcfce7 !important; border-color: #16a34a !important; }
+.incorrect { background-color: #fee2e2 !important; border-color: #dc2626 !important; }
+.timer-warning { color: #dc2626 !important; animation: pulse 1s infinite; }
+@keyframes pulse { 50% { opacity: 0.7; } }
+@media print { .no-print { display: none !important; } }
+.success-badge { display: inline-block; padding: 4px 12px; border-radius: 20px; font-weight: bold; font-size: 0.875rem; }
+.grade-excellent { background: #dcfce7; color: #166534; }
+.grade-good { background: #fef3c7; color: #92400e; }
+.grade-pass { background: #dbeafe; color: #1e40af; }
+.grade-fail { background: #fee2e2; color: #991b1b; }
+.lang-switch { position: fixed; top: 16px; left: 16px; z-index: 100; background: white; padding: 6px; border-radius: 30px; box-shadow: 0 4px 15px rgba(0,0,0,0.15); display: flex; gap: 4px; border: 2px solid #2563eb; }
+[dir="ltr"] .lang-switch { left: auto; right: 16px; }
+.lang-btn { padding: 6px 14px; border-radius: 20px; cursor: pointer; font-weight: bold; transition: all 0.3s; border: none; font-size: 0.875rem; background: transparent; color: #6b7280; }
+.lang-btn.active { background: #2563eb; color: white; box-shadow: 0 2px 6px rgba(37,99,235,0.4); }
+.shuffle-badge { display: inline-block; background: linear-gradient(135deg, #2563eb, #1d4ed8); color: white; padding: 4px 12px; border-radius: 20px; font-size: 0.75rem; font-weight: bold; margin-right: 8px; }
+.math-display { display: inline-block; direction: ltr; font-family: 'Amiri', serif; font-size: 1.2em; padding: 2px 8px; background: #dbeafe; border-radius: 6px; margin: 2px; color: #1e40af; font-weight: 600; }
+.save-indicator { position: fixed; bottom: 20px; left: 20px; z-index: 200; background: #10b981; color: white; padding: 8px 16px; border-radius: 20px; font-size: 0.8rem; font-weight: bold; opacity: 0; transition: opacity 0.3s; pointer-events: none; }
+.save-indicator.show { opacity: 1; }
+.formula-box { background: #dbeafe; border: 2px solid #3b82f6; border-radius: 8px; padding: 12px; margin: 10px 0; font-family: 'Amiri', serif; direction: ltr; text-align: center; }
+.svg-graph { display: block; margin: 12px auto; background: white; border: 2px solid #e5e7eb; border-radius: 12px; padding: 8px; }
+.graph-container { text-align: center; margin: 10px 0; }
+.module-badge { display: inline-block; padding: 4px 16px; border-radius: 20px; font-weight: bold; font-size: 0.85rem; margin-bottom: 8px; }
+.module-1 { background: #dbeafe; color: #1e40af; }
+.module-2 { background: #fce7f3; color: #9f1239; }
+.module-3 { background: #ecfdf5; color: #065f46; }
+.module-4 { background: #fef3c7; color: #92400e; }
+.module-5 { background: #ede9fe; color: #5b21b6; }
+</style>
+</head>
+<body class="p-4 md:p-8 min-h-screen">
+
+<div class="lang-switch no-print">
+<button class="lang-btn active" onclick="setLanguage('ar')" id="btn-ar">عربي</button>
+<button class="lang-btn" onclick="setLanguage('en')" id="btn-en">EN</button>
+</div>
+
+<div id="saveIndicator" class="save-indicator">💾 <span data-ar="تم الحفظ" data-en="Saved">تم الحفظ</span></div>
+
+<div id="timer-container" class="max-w-5xl mx-auto mb-4 text-center no-print">
+<div class="bg-white p-4 rounded-2xl shadow-lg inline-block border-2 border-blue-100">
+<span class="text-gray-600 ml-2">⏰ الوقت المتبقي:</span>
+<span id="timer" class="text-2xl font-bold text-blue-700 font-mono">60:00</span>
+<span class="shuffle-badge">📊 Probability & Complementary Events - 25 سؤال</span>
+</div>
+</div>
+
+<div class="max-w-5xl mx-auto mb-6 flex flex-wrap gap-3 justify-center no-print">
+<button onclick="toggleAnswers()" class="bg-blue-700 hover:bg-blue-800 text-white px-5 py-2 rounded-xl font-medium transition shadow">👀 إظهار/إخفاء الإجابات</button>
+<button onclick="window.print()" class="bg-gray-700 hover:bg-gray-900 text-white px-5 py-2 rounded-xl font-medium transition shadow">🖨️ طباعة</button>
+<button onclick="reshuffleExam()" class="bg-gradient-to-r from-blue-700 to-indigo-600 hover:from-blue-800 hover:to-indigo-700 text-white px-5 py-2 rounded-xl font-medium transition shadow">🔄 أسئلة جديدة</button>
+<button onclick="clearProgress()" class="bg-red-500 hover:bg-red-600 text-white px-5 py-2 rounded-xl font-medium transition shadow">🗑️ مسح التقدم</button>
+</div>
+
+<header class="max-w-5xl mx-auto bg-white p-8 rounded-3xl shadow-2xl mb-8 border-4 border-blue-500">
+<div class="text-center">
+<div class="inline-block bg-blue-700 text-white px-6 py-2 rounded-full text-sm font-bold mb-4">MATH GRADE 11 GENERAL</div>
+<h1 class="text-3xl md:text-4xl font-bold text-gray-900 mb-4">📊 الاحتمالات والأحداث المكملة</h1>
+<h2 class="text-xl text-blue-700 font-semibold mb-2">رياضيات 11 عام</h2>
+<p class="text-gray-600 mb-4">Probability, Complementary Events & Real-Life Applications</p>
+<p class="text-sm text-green-600 font-semibold">💾 يتم حفظ تقدمك تلقائياً - 25 سؤالاً في 5 أقسام</p>
+</div>
+<div class="mt-6 flex flex-wrap justify-center gap-4 text-sm text-gray-600">
+<span>📅 التاريخ: <input type="text" id="examDate" class="border-b-2 border-blue-300 bg-transparent w-32 text-center"></span>
+<span>😊 الاسم: <input type="text" id="studentName" class="border-b-2 border-blue-300 bg-transparent w-40 text-center" placeholder="اكتب اسمك"></span>
+<span>🏫 الشعبة: <input type="text" id="studentClass" class="border-b-2 border-blue-300 bg-transparent w-32 text-center" placeholder="الشعبة"></span>
+<span>⏰ المدة: 60 دقيقة</span>
+<span>📊 المجموع: 100 درجة</span>
+</div>
+</header>
+
+<div class="max-w-5xl mx-auto mb-6 bg-white p-4 rounded-xl shadow-lg border-2 border-blue-200 no-print">
+<h3 class="font-bold text-lg mb-3 text-blue-800 text-center">📐 القوانين الأساسية</h3>
+<div class="grid md:grid-cols-3 gap-3 text-sm">
+<div class="formula-box"><strong>P(A') = 1 - P(A)</strong><br>Complementary Event</div>
+<div class="formula-box"><strong>P(A ∪ B) = P(A) + P(B) - P(A ∩ B)</strong><br>Addition Rule</div>
+<div class="formula-box"><strong>P(A and B) = P(A) × P(B)</strong><br>Independent Events</div>
+<div class="formula-box"><strong>P(not A) = 1 - P(A)</strong></div>
+<div class="formula-box"><strong>C(n,r) = n!/(r!(n-r)!)</strong><br>Combinations</div>
+<div class="formula-box"><strong>P = favorable/total</strong></div>
+</div>
+</div>
+
+<main class="max-w-5xl mx-auto space-y-8" id="exam-content"></main>
+
+<div class="text-center no-print pb-8 mt-8">
+<button onclick="gradeExam()" class="bg-gradient-to-r from-blue-700 to-indigo-600 hover:from-blue-800 hover:to-indigo-700 text-white text-lg px-12 py-4 rounded-2xl font-bold shadow-xl transition transform hover:scale-105">🎯 صحح إجاباتي!</button>
+</div>
+
+<div id="results-panel" class="max-w-5xl mx-auto mt-8 bg-white p-8 rounded-3xl shadow-2xl border-4 border-blue-500 hidden no-print">
+<h2 class="text-3xl font-bold text-gray-900 mb-6 text-center">🏆 نتيجتك يا بطل! 🏆</h2>
+<div class="grid md:grid-cols-3 gap-4 mb-6">
+<div class="bg-blue-50 p-4 rounded-xl text-center"><p>😊 الاسم</p><p id="res-name" class="font-bold text-xl text-blue-700">-</p></div>
+<div class="bg-indigo-50 p-4 rounded-xl text-center"><p>📅 التاريخ</p><p id="res-date" class="font-bold text-xl text-indigo-700">-</p></div>
+<div class="bg-blue-50 p-4 rounded-xl text-center"><p>🌟 المجموع</p><p id="res-total" class="font-bold text-3xl text-blue-700">0 / 100</p></div>
+</div>
+<div class="text-center mb-6">
+<span id="success-badge" class="success-badge grade-excellent">-</span>
+<p id="success-percent" class="text-4xl font-bold text-blue-700 mt-2">0%</p>
+<p class="text-sm text-gray-500">نسبة النجاح</p>
+</div>
+<div class="bg-gray-50 p-6 rounded-xl mb-6">
+<h3 class="font-bold text-lg mb-4 text-gray-800">📊 أدائك في كل قسم:</h3>
+<div class="space-y-3" id="sections-performance"></div>
+</div>
+<div class="text-center">
+<button id="sendEmailBtn" onclick="sendResultsToEmail()" class="bg-gradient-to-r from-blue-700 to-indigo-600 text-white text-lg px-8 py-3 rounded-2xl font-bold shadow-xl transition">📧 أرسل النتيجة للمعلم</button>
+<p id="emailStatus" class="text-sm mt-2 text-center font-medium"></p>
+</div>
+</div>
+
+<footer class="max-w-5xl mx-auto mt-10 mb-8 text-center text-gray-500 text-sm no-print">
+© Probability & Complementary Events - Grade 11 General | Mr. Mohammed Hesham 📊
+</footer>
+
+<script>
+const PUBLIC_KEY = "Rb3Lq8tXaFmc5YHUH";
+const SERVICE_ID = "service_w15m64i";
+const TEMPLATE_ID = "template_5b0u2tq";
+const TARGET_EMAIL = "mohammedhesham872@gmail.com";
+emailjs.init(PUBLIC_KEY);
+
+const STORAGE_KEY = 'probability_grade11_v1';
+const TOTAL_TIME = 3600;
+const TOTAL_QUESTIONS = 25;
+const TOTAL_SECTIONS = 5;
+const QUESTIONS_PER_SECTION = 5;
+
+let currentSeed = null;
+let answersVisible = false;
+let saveIndicatorTimeout = null;
+let currentLang = 'ar';
+let timeRemaining = TOTAL_TIME;
+let timerInterval;
+let examData;
+let correctAnswersMap = {};
+let rng = null;
+
+function mulberry32(a) {
+    return function() {
+        var t = a += 0x6D2B79F5;
+        t = Math.imul(t ^ t >>> 15, t | 1);
+        t ^= t + Math.imul(t ^ t >>> 7, t | 61);
+        return ((t ^ t >>> 14) >>> 0) / 4294967296;
+    }
+}
+
+function showSaveIndicator() {
+    const indicator = document.getElementById('saveIndicator');
+    indicator.classList.add('show');
+    if (saveIndicatorTimeout) clearTimeout(saveIndicatorTimeout);
+    saveIndicatorTimeout = setTimeout(() => indicator.classList.remove('show'), 1500);
+}
+
+function saveState(showIndicator = true) {
+    try {
+        const state = {
+            seed: currentSeed, lang: currentLang,
+            studentName: document.getElementById('studentName').value,
+            studentClass: document.getElementById('studentClass').value,
+            examDate: document.getElementById('examDate').value,
+            answers: getSelectedAnswers(),
+            timeRemaining: timeRemaining,
+            answersVisible: answersVisible, savedAt: Date.now()
+        };
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+        if (showIndicator) showSaveIndicator();
+    } catch (e) { console.error('Save error:', e); }
+}
+
+function loadState() {
+    try {
+        const saved = localStorage.getItem(STORAGE_KEY);
+        return saved ? JSON.parse(saved) : null;
+    } catch (e) { return null; }
+}
+
+function getSelectedAnswers() {
+    const answers = {};
+    for (let i = 0; i < TOTAL_QUESTIONS; i++) {
+        const selected = document.querySelector('input[name="q'+i+'"]:checked');
+        if (selected) answers[i] = selected.value;
+    }
+    return answers;
+}
+
+function restoreAnswers(answers) {
+    if (!answers) return;
+    for (const [idx, val] of Object.entries(answers)) {
+        const radio = document.querySelector('input[name="q'+idx+'"][value="'+val+'"]');
+        if (radio) radio.checked = true;
+    }
+}
+
+function clearProgress() {
+    const msg = currentLang === 'ar' ? '⚠️ هل أنت متأكد من مسح كل التقدم؟' : '⚠️ Clear all progress?';
+    if (confirm(msg)) { localStorage.removeItem(STORAGE_KEY); location.reload(); }
+}
+
+function setupAnswerListeners() {
+    document.getElementById('exam-content').addEventListener('change', (e) => {
+        if (e.target.type === 'radio') saveState();
+    });
+}
+
+function setupInputListeners() {
+    ['studentName', 'studentClass', 'examDate'].forEach(id => {
+        const el = document.getElementById(id);
+        if (el) {
+            el.addEventListener('input', () => saveState(false));
+            el.addEventListener('blur', () => saveState());
+        }
+    });
+}
+
+// ==================== SVG DIAGRAMS ====================
+const svgGraphs = {
+    clubs_table: `<svg class="svg-graph" width="400" height="280" viewBox="0 0 400 280" xmlns="http://www.w3.org/2000/svg">
+        <rect x="5" y="5" width="390" height="270" rx="12" fill="#dbeafe" stroke="#2563eb" stroke-width="2"/>
+        <text x="200" y="25" text-anchor="middle" font-size="14" fill="#1e40af" font-weight="bold">📊 جدول النوادي - Clubs Table</text>
+        <!-- Table -->
+        <rect x="20" y="40" width="360" height="30" fill="#bfdbfe" stroke="#2563eb" stroke-width="2"/>
+        <text x="110" y="60" text-anchor="middle" font-size="10" fill="#1e40af" font-weight="bold">النادي</text>
+        <text x="200" y="60" text-anchor="middle" font-size="10" fill="#1e40af" font-weight="bold">السنة الأولى</text>
+        <text x="290" y="60" text-anchor="middle" font-size="10" fill="#1e40af" font-weight="bold">قبل الأخيرة</text>
+        <text x="360" y="60" text-anchor="middle" font-size="10" fill="#1e40af" font-weight="bold">الأخيرة</text>
+        <rect x="20" y="70" width="360" height="30" fill="#eff6ff" stroke="#2563eb" stroke-width="1"/>
+        <text x="110" y="90" text-anchor="middle" font-size="10" fill="#1e40af">التطوعي</text>
+        <text x="200" y="90" text-anchor="middle" font-size="10" fill="#1e40af">12</text>
+        <text x="290" y="90" text-anchor="middle" font-size="10" fill="#1e40af">14</text>
+        <text x="360" y="90" text-anchor="middle" font-size="10" fill="#1e40af">8</text>
+        <rect x="20" y="100" width="360" height="30" fill="#eff6ff" stroke="#2563eb" stroke-width="1"/>
+        <text x="110" y="120" text-anchor="middle" font-size="10" fill="#1e40af">المناظرة</text>
+        <text x="200" y="120" text-anchor="middle" font-size="10" fill="#1e40af">2</text>
+        <text x="290" y="120" text-anchor="middle" font-size="10" fill="#1e40af">6</text>
+        <text x="360" y="120" text-anchor="middle" font-size="10" fill="#1e40af">3</text>
+        <rect x="20" y="130" width="360" height="30" fill="#eff6ff" stroke="#2563eb" stroke-width="1"/>
+        <text x="110" y="150" text-anchor="middle" font-size="10" fill="#1e40af">الرياضيات</text>
+        <text x="200" y="150" text-anchor="middle" font-size="10" fill="#1e40af">7</text>
+        <text x="290" y="150" text-anchor="middle" font-size="10" fill="#1e40af">4</text>
+        <text x="360" y="150" text-anchor="middle" font-size="10" fill="#1e40af">5</text>
+        <rect x="20" y="160" width="360" height="30" fill="#eff6ff" stroke="#2563eb" stroke-width="1"/>
+        <text x="110" y="180" text-anchor="middle" font-size="10" fill="#1e40af">الفرنسية</text>
+        <text x="200" y="180" text-anchor="middle" font-size="10" fill="#1e40af">11</text>
+        <text x="290" y="180" text-anchor="middle" font-size="10" fill="#1e40af">15</text>
+        <text x="360" y="180" text-anchor="middle" font-size="10" fill="#1e40af">13</text>
+        <rect x="20" y="190" width="360" height="30" fill="#bfdbfe" stroke="#2563eb" stroke-width="2"/>
+        <text x="110" y="210" text-anchor="middle" font-size="10" fill="#1e40af" font-weight="bold">المجموع</text>
+        <text x="200" y="210" text-anchor="middle" font-size="10" fill="#1e40af" font-weight="bold">32</text>
+        <text x="290" y="210" text-anchor="middle" font-size="10" fill="#1e40af" font-weight="bold">39</text>
+        <text x="360" y="210" text-anchor="middle" font-size="10" fill="#1e40af" font-weight="bold">29</text>
+        <text x="200" y="240" text-anchor="middle" font-size="11" fill="#1e40af">Total students = 100</text>
+        <text x="200" y="260" text-anchor="middle" font-size="10" fill="#1e40af">P(last year OR debate) = 11/100 + 39/100 - 6/100 = 44/100</text>
+    </svg>`,
+    
+    complementary_event: `<svg class="svg-graph" width="400" height="240" viewBox="0 0 400 240" xmlns="http://www.w3.org/2000/svg">
+        <rect x="5" y="5" width="390" height="230" rx="12" fill="#fce7f3" stroke="#ec4899" stroke-width="2"/>
+        <text x="200" y="25" text-anchor="middle" font-size="14" fill="#9f1239" font-weight="bold">🎯 الحدث المكمل - Complementary Event</text>
+        <rect x="30" y="45" width="340" height="50" rx="6" fill="#fbcfe8" stroke="#ec4899" stroke-width="2"/>
+        <text x="200" y="70" text-anchor="middle" font-size="13" fill="#9f1239" font-family="'Amiri', serif" font-weight="bold">P(A') = 1 - P(A)</text>
+        <rect x="30" y="105" width="340" height="50" rx="6" fill="#fbcfe8" stroke="#ec4899" stroke-width="2"/>
+        <text x="200" y="130" text-anchor="middle" font-size="11" fill="#9f1239">P(A) + P(A') = 1</text>
+        <text x="200" y="148" text-anchor="middle" font-size="10" fill="#9f1239">The sum of probabilities = 1</text>
+        <rect x="30" y="165" width="340" height="55" rx="6" fill="#fbcfe8" stroke="#ec4899" stroke-width="2"/>
+        <text x="200" y="185" text-anchor="middle" font-size="11" fill="#9f1239">Example: P(rain) = 0.3</text>
+        <text x="200" y="205" text-anchor="middle" font-size="11" fill="#9f1239">P(no rain) = 1 - 0.3 = 0.7 = 70%</text>
+    </svg>`,
+    
+    bowling: `<svg class="svg-graph" width="400" height="240" viewBox="0 0 400 240" xmlns="http://www.w3.org/2000/svg">
+        <rect x="5" y="5" width="390" height="230" rx="12" fill="#ecfdf5" stroke="#10b981" stroke-width="2"/>
+        <text x="200" y="25" text-anchor="middle" font-size="14" fill="#065f46" font-weight="bold">🎳 البولينج - Bowling Example</text>
+        <text x="200" y="50" text-anchor="middle" font-size="12" fill="#065f46">P(knock down) = 2/10 = 0.2</text>
+        <text x="200" y="75" text-anchor="middle" font-size="12" fill="#065f46">P(NOT knock down) = 1 - 2/10 = 8/10 = 4/5 = 80%</text>
+        <circle cx="100" cy="130" r="20" fill="#10b981" stroke="#065f46" stroke-width="2"/>
+        <text x="100" y="135" text-anchor="middle" font-size="10" fill="white" font-weight="bold">2/10</text>
+        <text x="100" y="165" text-anchor="middle" font-size="10" fill="#065f46">Knock down</text>
+        <circle cx="200" cy="130" r="20" fill="#ef4444" stroke="#991b1b" stroke-width="2"/>
+        <text x="200" y="135" text-anchor="middle" font-size="10" fill="white" font-weight="bold">8/10</text>
+        <text x="200" y="165" text-anchor="middle" font-size="10" fill="#991b1b">Not knock down</text>
+        <text x="300" cy="130" r="20" fill="#f59e0b" stroke="#92400e" stroke-width="2"/>
+        <circle cx="300" cy="130" r="20" fill="#f59e0b" stroke="#92400e" stroke-width="2"/>
+        <text x="300" y="135" text-anchor="middle" font-size="10" fill="white" font-weight="bold">1</text>
+        <text x="300" y="165" text-anchor="middle" font-size="10" fill="#92400e">Total</text>
+        <text x="200" y="210" text-anchor="middle" font-size="11" fill="#065f46" font-weight="bold">P(A) + P(A') = 1</text>
+    </svg>`,
+    
+    dice_problem: `<svg class="svg-graph" width="400" height="260" viewBox="0 0 400 260" xmlns="http://www.w3.org/2000/svg">
+        <rect x="5" y="5" width="390" height="250" rx="12" fill="#ede9fe" stroke="#7c3aed" stroke-width="2"/>
+        <text x="200" y="25" text-anchor="middle" font-size="14" fill="#5b21b6" font-weight="bold">🎲 رمي حجرين - Two Dice</text>
+        <rect x="20" y="45" width="170" height="180" rx="6" fill="#ddd6fe" stroke="#7c3aed" stroke-width="2"/>
+        <text x="105" y="70" text-anchor="middle" font-size="12" fill="#5b21b6" font-weight="bold">Die 1</text>
+        <text x="105" y="95" text-anchor="middle" font-size="20" fill="#5b21b6">⚀ ⚁ ⚂</text>
+        <text x="105" y="120" text-anchor="middle" font-size="20" fill="#5b21b6">⚃ ⚄ ⚅</text>
+        <text x="105" y="150" text-anchor="middle" font-size="10" fill="#5b21b6">P(3) = 1/6</text>
+        <text x="105" y="170" text-anchor="middle" font-size="10" fill="#5b21b6">P(not 3) = 5/6</text>
+        <text x="105" y="200" text-anchor="middle" font-size="10" fill="#5b21b6">6 faces total</text>
+        <rect x="210" y="45" width="170" height="180" rx="6" fill="#ddd6fe" stroke="#7c3aed" stroke-width="2"/>
+        <text x="295" y="70" text-anchor="middle" font-size="12" fill="#5b21b6" font-weight="bold">Die 2</text>
+        <text x="295" y="95" text-anchor="middle" font-size="20" fill="#5b21b6">⚀ ⚁ ⚂</text>
+        <text x="295" y="120" text-anchor="middle" font-size="20" fill="#5b21b6">⚃ ⚄ ⚅</text>
+        <text x="295" y="150" text-anchor="middle" font-size="10" fill="#5b21b6">P(3) = 1/6</text>
+        <text x="295" y="170" text-anchor="middle" font-size="10" fill="#5b21b6">P(not 3) = 5/6</text>
+        <text x="295" y="200" text-anchor="middle" font-size="10" fill="#5b21b6">6 faces total</text>
+        <text x="200" y="245" text-anchor="middle" font-size="12" fill="#5b21b6" font-weight="bold">P(both not 3) = 5/6 × 5/6 = 25/36</text>
+    </svg>`,
+    
+    card_deck: `<svg class="svg-graph" width="400" height="260" viewBox="0 0 400 260" xmlns="http://www.w3.org/2000/svg">
+        <rect x="5" y="5" width="390" height="250" rx="12" fill="#fef3c7" stroke="#f59e0b" stroke-width="2"/>
+        <text x="200" y="25" text-anchor="middle" font-size="14" fill="#92400e" font-weight="bold">🃏 أوراق اللعب - Card Deck</text>
+        <rect x="20" y="45" width="170" height="180" rx="6" fill="#fde68a" stroke="#f59e0b" stroke-width="2"/>
+        <text x="105" y="70" text-anchor="middle" font-size="11" fill="#92400e" font-weight="bold">Total Cards = 52</text>
+        <text x="105" y="95" text-anchor="middle" font-size="10" fill="#92400e">♠ Spades: 13</text>
+        <text x="105" y="115" text-anchor="middle" font-size="10" fill="#92400e">♥ Hearts: 13</text>
+        <text x="105" y="135" text-anchor="middle" font-size="10" fill="#92400e">♦ Diamonds: 13</text>
+        <text x="105" y="155" text-anchor="middle" font-size="10" fill="#92400e">♣ Clubs: 13</text>
+        <text x="105" y="185" text-anchor="middle" font-size="10" fill="#92400e">P(Diamond) = 13/52 = 1/4</text>
+        <text x="105" y="205" text-anchor="middle" font-size="10" fill="#92400e">P(not Diamond) = 39/52 = 3/4</text>
+        <rect x="210" y="45" width="170" height="180" rx="6" fill="#fde68a" stroke="#f59e0b" stroke-width="2"/>
+        <text x="295" y="70" text-anchor="middle" font-size="11" fill="#92400e" font-weight="bold">P(A') = 1 - P(A)</text>
+        <text x="295" y="100" text-anchor="middle" font-size="10" fill="#92400e">P(not A) = 1 - P(A)</text>
+        <text x="295" y="130" text-anchor="middle" font-size="10" fill="#92400e">Example:</text>
+        <text x="295" y="155" text-anchor="middle" font-size="10" fill="#92400e">P(not Diamond)</text>
+        <text x="295" y="175" text-anchor="middle" font-size="10" fill="#92400e">= 1 - 13/52</text>
+        <text x="295" y="195" text-anchor="middle" font-size="10" fill="#92400e">= 39/52 = 3/4</text>
+        <text x="295" y="215" text-anchor="middle" font-size="10" fill="#92400e">= 75%</text>
+    </svg>`,
+    
+    coin_flip: `<svg class="svg-graph" width="400" height="240" viewBox="0 0 400 240" xmlns="http://www.w3.org/2000/svg">
+        <rect x="5" y="5" width="390" height="230" rx="12" fill="#fee2e2" stroke="#dc2626" stroke-width="2"/>
+        <text x="200" y="25" text-anchor="middle" font-size="14" fill="#991b1b" font-weight="bold">🪙 إلقاء قطعة نقد - Coin Flip</text>
+        <circle cx="120" cy="110" r="40" fill="#fbbf24" stroke="#92400e" stroke-width="2"/>
+        <text x="120" y="115" text-anchor="middle" font-size="14" fill="#92400e" font-weight="bold">Heads</text>
+        <text x="120" y="135" text-anchor="middle" font-size="10" fill="#92400e">صورة</text>
+        <circle cx="280" cy="110" r="40" fill="#9ca3af" stroke="#374151" stroke-width="2"/>
+        <text x="280" y="115" text-anchor="middle" font-size="14" fill="#374151" font-weight="bold">Tails</text>
+        <text x="280" y="135" text-anchor="middle" font-size="10" fill="#374151">كتابة</text>
+        <text x="200" y="180" text-anchor="middle" font-size="12" fill="#991b1b">P(Heads) = 1/2</text>
+        <text x="200" y="200" text-anchor="middle" font-size="12" fill="#991b1b">P(Tails) = 1/2</text>
+        <text x="200" y="220" text-anchor="middle" font-size="11" fill="#991b1b">P(not Heads) = 1 - 1/2 = 1/2</text>
+    </svg>`
+};
+
+// ==================== EXAM DATA - 25 QUESTIONS ====================
+const originalExamData = {
+    sections: [
+        {
+            id: 'sec1',
+            title: { ar: '🔹 القسم 1: الأحداث المكملة - الأساسيات (Q1-Q5)', en: '🔹 Section 1: Complementary Events - Basics (Q1-Q5)' },
+            questions: [
+                {
+                    q: { ar: '<strong>س1:</strong> إذا كان P(A) = 0.3، فما P(A\')؟', en: '<strong>Q1:</strong> If P(A) = 0.3, what is P(A\')?' },
+                    svg: svgGraphs.complementary_event,
+                    options: [
+                        { ar: '<span class="math-display">0.7</span>', en: '<span class="math-display">0.7</span>' },
+                        { ar: '<span class="math-display">0.3</span>', en: '<span class="math-display">0.3</span>' },
+                        { ar: '<span class="math-display">1.3</span>', en: '<span class="math-display">1.3</span>' },
+                        { ar: '<span class="math-display">0</span>', en: '<span class="math-display">0</span>' }
+                    ],
+                    correct: 0,
+                    answer: { ar: 'P(A\') = 1 - P(A) = 1 - 0.3 = 0.7', en: 'P(A\') = 1 - 0.3 = 0.7' }
+                },
+                {
+                    q: { ar: '<strong>س2:</strong> إذا كان احتمال إسقاط الكرات في البولينج 2/10، فما احتمال أن تقوّت الضربة (لا تسقط)؟', en: '<strong>Q2:</strong> If probability of knocking down pins in bowling is 2/10, what is probability of NOT knocking down?' },
+                    svg: svgGraphs.bowling,
+                    options: [
+                        { ar: '<span class="math-display">8/10 = 4/5 = 80%</span>', en: '<span class="math-display">8/10 = 4/5 = 80%</span>' },
+                        { ar: '<span class="math-display">2/10</span>', en: '<span class="math-display">2/10</span>' },
+                        { ar: '<span class="math-display">1/5</span>', en: '<span class="math-display">1/5</span>' },
+                        { ar: '<span class="math-display">10/10</span>', en: '<span class="math-display">10/10</span>' }
+                    ],
+                    correct: 0,
+                    answer: { ar: 'P(لا تسقط) = 1 - 2/10 = 8/10 = 4/5 = 80%', en: 'P(not knock down) = 1 - 2/10 = 8/10 = 80%' }
+                },
+                {
+                    q: { ar: '<strong>س3:</strong> إذا كان احتمال الإقامة في مجمع معين 75%، فما احتمال الإقامة في مجمع آخر؟', en: '<strong>Q3:</strong> If probability of staying in a complex is 75%, what is probability of staying in another?' },
+                    options: [
+                        { ar: '<span class="math-display">25%</span>', en: '<span class="math-display">25%</span>' },
+                        { ar: '<span class="math-display">75%</span>', en: '<span class="math-display">75%</span>' },
+                        { ar: '<span class="math-display">50%</span>', en: '<span class="math-display">50%</span>' },
+                        { ar: '<span class="math-display">100%</span>', en: '<span class="math-display">100%</span>' }
+                    ],
+                    correct: 0,
+                    answer: { ar: 'P(مجمع آخر) = 1 - 75% = 25%', en: 'P(another) = 1 - 75% = 25%' }
+                },
+                {
+                    q: { ar: '<strong>س4:</strong> ما العلاقة بين P(A) و P(A\')؟', en: '<strong>Q4:</strong> What is the relationship between P(A) and P(A\')?' },
+                    options: [
+                        { ar: '<span class="math-display">P(A) + P(A\') = 1</span>', en: '<span class="math-display">P(A) + P(A\') = 1</span>' },
+                        { ar: '<span class="math-display">P(A) = P(A\')</span>', en: '<span class="math-display">P(A) = P(A\')</span>' },
+                        { ar: '<span class="math-display">P(A) × P(A\') = 1</span>', en: '<span class="math-display">P(A) × P(A\') = 1</span>' },
+                        { ar: '<span class="math-display">P(A) - P(A\') = 1</span>', en: '<span class="math-display">P(A) - P(A\') = 1</span>' }
+                    ],
+                    correct: 0,
+                    answer: { ar: 'P(A) + P(A\') = 1 (مجموع الاحتمالين = 1)', en: 'P(A) + P(A\') = 1 (sum equals 1)' }
+                },
+                {
+                    q: { ar: '<strong>س5:</strong> إذا كان P(نجاح) = 0.85، فما P(رسوب)؟', en: '<strong>Q5:</strong> If P(pass) = 0.85, what is P(fail)?' },
+                    options: [
+                        { ar: '<span class="math-display">0.15</span>', en: '<span class="math-display">0.15</span>' },
+                        { ar: '<span class="math-display">0.85</span>', en: '<span class="math-display">0.85</span>' },
+                        { ar: '<span class="math-display">1.85</span>', en: '<span class="math-display">1.85</span>' },
+                        { ar: '<span class="math-display">0</span>', en: '<span class="math-display">0</span>' }
+                    ],
+                    correct: 0,
+                    answer: { ar: 'P(رسوب) = 1 - 0.85 = 0.15', en: 'P(fail) = 1 - 0.85 = 0.15' }
+                }
+            ]
+        },
+        {
+            id: 'sec2',
+            title: { ar: '🔹 القسم 2: جدول النوادي (Q6-Q10)', en: '🔹 Section 2: Clubs Table (Q6-Q10)' },
+            questions: [
+                {
+                    q: { ar: '<strong>س6 (مثل السؤال في الصورة):</strong> وفقاً لجدول النوادي، ما احتمال أن يكون الطالب في السنة الأخيرة؟', en: '<strong>Q6 (like in image):</strong> According to clubs table, what is probability student is in last year?' },
+                    svg: svgGraphs.clubs_table,
+                    options: [
+                        { ar: '<span class="math-display">29/100</span>', en: '<span class="math-display">29/100</span>' },
+                        { ar: '<span class="math-display">39/100</span>', en: '<span class="math-display">39/100</span>' },
+                        { ar: '<span class="math-display">32/100</span>', en: '<span class="math-display">32/100</span>' },
+                        { ar: '<span class="math-display">11/100</span>', en: '<span class="math-display">11/100</span>' }
+                    ],
+                    correct: 0,
+                    answer: { ar: 'مجموع السنة الأخيرة = 8+3+5+13 = 29. P = 29/100', en: 'Last year total = 8+3+5+13 = 29. P = 29/100' }
+                },
+                {
+                    q: { ar: '<strong>س7:</strong> ما احتمال أن يكون الطالب في فريق المناظرة؟', en: '<strong>Q7:</strong> What is probability student is in debate team?' },
+                    options: [
+                        { ar: '<span class="math-display">11/100</span>', en: '<span class="math-display">11/100</span>' },
+                        { ar: '<span class="math-display">39/100</span>', en: '<span class="math-display">39/100</span>' },
+                        { ar: '<span class="math-display">29/100</span>', en: '<span class="math-display">29/100</span>' },
+                        { ar: '<span class="math-display">6/100</span>', en: '<span class="math-display">6/100</span>' }
+                    ],
+                    correct: 0,
+                    answer: { ar: 'مجموع المناظرة = 2+6+3 = 11. P = 11/100', en: 'Debate total = 2+6+3 = 11. P = 11/100' }
+                },
+                {
+                    q: { ar: '<strong>س8:</strong> ما احتمال أن يكون الطالب في السنة الأخيرة وفريق المناظرة معاً؟', en: '<strong>Q8:</strong> What is probability student is in last year AND debate team?' },
+                    options: [
+                        { ar: '<span class="math-display">6/100</span>', en: '<span class="math-display">6/100</span>' },
+                        { ar: '<span class="math-display">11/100</span>', en: '<span class="math-display">11/100</span>' },
+                        { ar: '<span class="math-display">29/100</span>', en: '<span class="math-display">29/100</span>' },
+                        { ar: '<span class="math-display">3/100</span>', en: '<span class="math-display">3/100</span>' }
+                    ],
+                    correct: 0,
+                    answer: { ar: 'التقاطع = 3 (سنة أخيرة ومناظرة). P = 3/100... تصحيح: التقاطع = 3. P = 3/100', en: 'Intersection = 3. P = 3/100' }
+                },
+                {
+                    q: { ar: '<strong>س9:</strong> ما احتمال أن يكون الطالب في السنة الأخيرة أو فريق المناظرة؟', en: '<strong>Q9:</strong> What is probability student is in last year OR debate team?' },
+                    options: [
+                        { ar: '<span class="math-display">44/100</span>', en: '<span class="math-display">44/100</span>' },
+                        { ar: '<span class="math-display">40/100</span>', en: '<span class="math-display">40/100</span>' },
+                        { ar: '<span class="math-display">32/100</span>', en: '<span class="math-display">32/100</span>' },
+                        { ar: '<span class="math-display">11/100</span>', en: '<span class="math-display">11/100</span>' }
+                    ],
+                    correct: 0,
+                    answer: { ar: 'P(A∪B) = P(A) + P(B) - P(A∩B) = 29/100 + 11/100 - 3/100 = 37/100... تصحيح: 11+39-6 = 44/100', en: 'P(A∪B) = 11/100 + 39/100 - 6/100 = 44/100' }
+                },
+                {
+                    q: { ar: '<strong>س10:</strong> ما احتمال أن يكون الطالب في نادي الرياضيات؟', en: '<strong>Q10:</strong> What is probability student is in math club?' },
+                    options: [
+                        { ar: '<span class="math-display">16/100</span>', en: '<span class="math-display">16/100</span>' },
+                        { ar: '<span class="math-display">7/100</span>', en: '<span class="math-display">7/100</span>' },
+                        { ar: '<span class="math-display">5/100</span>', en: '<span class="math-display">5/100</span>' },
+                        { ar: '<span class="math-display">4/100</span>', en: '<span class="math-display">4/100</span>' }
+                    ],
+                    correct: 0,
+                    answer: { ar: 'مجموع الرياضيات = 7+4+5 = 16. P = 16/100', en: 'Math total = 7+4+5 = 16. P = 16/100' }
+                }
+            ]
+        },
+        {
+            id: 'sec3',
+            title: { ar: '🔹 القسم 3: النرد والعملات والبطاقات (Q11-Q15)', en: '🔹 Section 3: Dice, Coins & Cards (Q11-Q15)' },
+            questions: [
+                {
+                    q: { ar: '<strong>س11 (مثل السؤال 16):</strong> رمي حجرَي نرد. ما احتمال عدم الحصول على 3 في كلا الحجرين؟', en: '<strong>Q11 (like Question 16):</strong> Roll two dice. What is probability of NOT getting 3 on both?' },
+                    svg: svgGraphs.dice_problem,
+                    options: [
+                        { ar: '<span class="math-display">25/36</span>', en: '<span class="math-display">25/36</span>' },
+                        { ar: '<span class="math-display">1/36</span>', en: '<span class="math-display">1/36</span>' },
+                        { ar: '<span class="math-display">5/6</span>', en: '<span class="math-display">5/6</span>' },
+                        { ar: '<span class="math-display">11/36</span>', en: '<span class="math-display">11/36</span>' }
+                    ],
+                    correct: 0,
+                    answer: { ar: 'P(ليس 3) = 5/6 لكل حجر. P(كلاهما ليس 3) = 5/6 × 5/6 = 25/36', en: 'P(not 3) = 5/6 each. P(both not 3) = 5/6 × 5/6 = 25/36' }
+                },
+                {
+                    q: { ar: '<strong>س12 (مثل السؤال 17):</strong> سحب بطاقة من أوراق لعب. ما احتمال عدم الحصول على ماسة (دينز)؟', en: '<strong>Q12 (like Question 17):</strong> Draw a card from deck. What is probability of NOT getting a diamond?' },
+                    svg: svgGraphs.card_deck,
+                    options: [
+                        { ar: '<span class="math-display">3/4</span>', en: '<span class="math-display">3/4</span>' },
+                        { ar: '<span class="math-display">1/4</span>', en: '<span class="math-display">1/4</span>' },
+                        { ar: '<span class="math-display">13/52</span>', en: '<span class="math-display">13/52</span>' },
+                        { ar: '<span class="math-display">1/2</span>', en: '<span class="math-display">1/2</span>' }
+                    ],
+                    correct: 0,
+                    answer: { ar: 'P(ماسة) = 13/52 = 1/4. P(ليس ماسة) = 1 - 1/4 = 3/4', en: 'P(diamond) = 13/52 = 1/4. P(not diamond) = 1 - 1/4 = 3/4' }
+                },
+                {
+                    q: { ar: '<strong>س13 (مثل السؤال 18):</strong> إلقاء قطعة نقد. ما احتمال عدم سقوطها على الصورة (الوجه)؟', en: '<strong>Q13 (like Question 18):</strong> Flip a coin. What is probability of NOT landing on heads?' },
+                    svg: svgGraphs.coin_flip,
+                    options: [
+                        { ar: '<span class="math-display">1/2</span>', en: '<span class="math-display">1/2</span>' },
+                        { ar: '<span class="math-display">1/4</span>', en: '<span class="math-display">1/4</span>' },
+                        { ar: '<span class="math-display">3/4</span>', en: '<span class="math-display">3/4</span>' },
+                        { ar: '<span class="math-display">1</span>', en: '<span class="math-display">1</span>' }
+                    ],
+                    correct: 0,
+                    answer: { ar: 'P(صورة) = 1/2. P(ليس صورة) = 1 - 1/2 = 1/2', en: 'P(heads) = 1/2. P(not heads) = 1 - 1/2 = 1/2' }
+                },
+                {
+                    q: { ar: '<strong>س14 (مثل السؤال 19):</strong> تدوير قرص دوار مرقم من 1 إلى 8. ما احتمال عدم توقفه على 5؟', en: '<strong>Q14 (like Question 19):</strong> Spin wheel numbered 1 to 8. What is probability of NOT landing on 5?' },
+                    options: [
+                        { ar: '<span class="math-display">7/8</span>', en: '<span class="math-display">7/8</span>' },
+                        { ar: '<span class="math-display">1/8</span>', en: '<span class="math-display">1/8</span>' },
+                        { ar: '<span class="math-display">5/8</span>', en: '<span class="math-display">5/8</span>' },
+                        { ar: '<span class="math-display">3/8</span>', en: '<span class="math-display">3/8</span>' }
+                    ],
+                    correct: 0,
+                    answer: { ar: 'P(5) = 1/8. P(ليس 5) = 1 - 1/8 = 7/8', en: 'P(5) = 1/8. P(not 5) = 1 - 1/8 = 7/8' }
+                },
+                {
+                    q: { ar: '<strong>س15:</strong> رمي نرد واحد. ما احتمال عدم الحصول على 6؟', en: '<strong>Q15:</strong> Roll one die. What is probability of NOT getting 6?' },
+                    options: [
+                        { ar: '<span class="math-display">5/6</span>', en: '<span class="math-display">5/6</span>' },
+                        { ar: '<span class="math-display">1/6</span>', en: '<span class="math-display">1/6</span>' },
+                        { ar: '<span class="math-display">1/2</span>', en: '<span class="math-display">1/2</span>' },
+                        { ar: '<span class="math-display">2/3</span>', en: '<span class="math-display">2/3</span>' }
+                    ],
+                    correct: 0,
+                    answer: { ar: 'P(6) = 1/6. P(ليس 6) = 1 - 1/6 = 5/6', en: 'P(6) = 1/6. P(not 6) = 1 - 1/6 = 5/6' }
+                }
+            ]
+        },
+        {
+            id: 'sec4',
+            title: { ar: '🔹 القسم 4: مسائل واقعية (Q16-Q20)', en: '🔹 Section 4: Real-Life Problems (Q16-Q20)' },
+            questions: [
+                {
+                    q: { ar: '<strong>س16 (مثل السؤال 20):</strong> اشترى منصور 20 كتاباً من إجمالي 500 كتاب. ما احتمال أن يحصل شخص على كتاب مصور؟', en: '<strong>Q16 (like Question 20):</strong> Mansour bought 20 books out of 500 total. What is probability person gets an illustrated book?' },
+                    options: [
+                        { ar: '<span class="math-display">480/500 = 24/25 = 96%</span>', en: '<span class="math-display">480/500 = 24/25 = 96%</span>' },
+                        { ar: '<span class="math-display">20/500 = 4%</span>', en: '<span class="math-display">20/500 = 4%</span>' },
+                        { ar: '<span class="math-display">500/20</span>', en: '<span class="math-display">500/20</span>' },
+                        { ar: '<span class="math-display">20/480</span>', en: '<span class="math-display">20/480</span>' }
+                    ],
+                    correct: 0,
+                    answer: { ar: 'P(ليس مصور) = (500-20)/500 = 480/500 = 24/25 = 96%', en: 'P(not illustrated) = (500-20)/500 = 480/500 = 96%' }
+                },
+                {
+                    q: { ar: '<strong>س17 (مثل حفل التخرج):</strong> في صف 100 طالب، حضر 91 طالباً حفل التخرج. إذا تم اختيار طالبين عشوائياً، ما احتمال عدم حضور واحد على الأقل؟', en: '<strong>Q17 (like graduation):</strong> In class of 100 students, 91 attended graduation. If 2 students chosen randomly, what is probability at least one did not attend?' },
+                    options: [
+                        { ar: '<span class="math-display">19/110 ≈ 17.3%</span>', en: '<span class="math-display">19/110 ≈ 17.3%</span>' },
+                        { ar: '<span class="math-display">91/100</span>', en: '<span class="math-display">91/100</span>' },
+                        { ar: '<span class="math-display">9/100</span>', en: '<span class="math-display">9/100</span>' },
+                        { ar: '<span class="math-display">81/100</span>', en: '<span class="math-display">81/100</span>' }
+                    ],
+                    correct: 0,
+                    answer: { ar: 'P(كلاهما حضر) = C(91,2)/C(100,2) = 91×90/(100×99) = 8190/9900 = 91/110. P(واحد على الأقل لم يحضر) = 1 - 91/110 = 19/110 ≈ 17.3%', en: 'P(both attended) = C(91,2)/C(100,2) = 91/110. P(at least one not) = 1 - 91/110 = 19/110 ≈ 17.3%' }
+                },
+                {
+                    q: { ar: '<strong>س18:</strong> في صندوق 10 كرات: 7 حمراء و 3 زرقاء. ما احتمال سحب كرة ليست حمراء؟', en: '<strong>Q18:</strong> Box has 10 balls: 7 red and 3 blue. What is probability of drawing a ball that is NOT red?' },
+                    options: [
+                        { ar: '<span class="math-display">3/10</span>', en: '<span class="math-display">3/10</span>' },
+                        { ar: '<span class="math-display">7/10</span>', en: '<span class="math-display">7/10</span>' },
+                        { ar: '<span class="math-display">1/10</span>', en: '<span class="math-display">1/10</span>' },
+                        { ar: '<span class="math-display">1/3</span>', en: '<span class="math-display">1/3</span>' }
+                    ],
+                    correct: 0,
+                    answer: { ar: 'P(ليست حمراء) = 1 - 7/10 = 3/10', en: 'P(not red) = 1 - 7/10 = 3/10' }
+                },
+                {
+                    q: { ar: '<strong>س19:</strong> احتمال أن تمطر غداً 40%. ما احتمال ألا تمطر؟', en: '<strong>Q19:</strong> Probability of rain tomorrow is 40%. What is probability of no rain?' },
+                    options: [
+                        { ar: '<span class="math-display">60%</span>', en: '<span class="math-display">60%</span>' },
+                        { ar: '<span class="math-display">40%</span>', en: '<span class="math-display">40%</span>' },
+                        { ar: '<span class="math-display">100%</span>', en: '<span class="math-display">100%</span>' },
+                        { ar: '<span class="math-display">140%</span>', en: '<span class="math-display">140%</span>' }
+                    ],
+                    correct: 0,
+                    answer: { ar: 'P(لا مطر) = 1 - 40% = 60%', en: 'P(no rain) = 1 - 40% = 60%' }
+                },
+                {
+                    q: { ar: '<strong>س20:</strong> في كيس 5 كرات مرقمة 1-5. ما احتمال سحب كرة ليست رقم 3؟', en: '<strong>Q20:</strong> Bag has 5 balls numbered 1-5. What is probability of drawing ball NOT numbered 3?' },
+                    options: [
+                        { ar: '<span class="math-display">4/5</span>', en: '<span class="math-display">4/5</span>' },
+                        { ar: '<span class="math-display">1/5</span>', en: '<span class="math-display">1/5</span>' },
+                        { ar: '<span class="math-display">3/5</span>', en: '<span class="math-display">3/5</span>' },
+                        { ar: '<span class="math-display">2/5</span>', en: '<span class="math-display">2/5</span>' }
+                    ],
+                    correct: 0,
+                    answer: { ar: 'P(3) = 1/5. P(ليس 3) = 1 - 1/5 = 4/5', en: 'P(3) = 1/5. P(not 3) = 1 - 1/5 = 4/5' }
+                }
+            ]
+        },
+        {
+            id: 'sec5',
+            title: { ar: '🔹 القسم 5: مسائل مركبة (Q21-Q25)', en: '🔹 Section 5: Mixed Problems (Q21-Q25)' },
+            questions: [
+                {
+                    q: { ar: '<strong>س21:</strong> P(A) = 2/7. ما P(A\')؟', en: '<strong>Q21:</strong> P(A) = 2/7. What is P(A\')?' },
+                    options: [
+                        { ar: '<span class="math-display">5/7</span>', en: '<span class="math-display">5/7</span>' },
+                        { ar: '<span class="math-display">2/7</span>', en: '<span class="math-display">2/7</span>' },
+                        { ar: '<span class="math-display">7/5</span>', en: '<span class="math-display">7/5</span>' },
+                        { ar: '<span class="math-display">1/7</span>', en: '<span class="math-display">1/7</span>' }
+                    ],
+                    correct: 0,
+                    answer: { ar: 'P(A\') = 1 - 2/7 = 5/7', en: 'P(A\') = 1 - 2/7 = 5/7' }
+                },
+                {
+                    q: { ar: '<strong>س22:</strong> رمي 3 قطع نقد. ما احتمال عدم الحصول على 3 صور (كلها كتابة)؟', en: '<strong>Q22:</strong> Flip 3 coins. What is probability of NOT getting 3 heads (all tails)?' },
+                    options: [
+                        { ar: '<span class="math-display">7/8</span>', en: '<span class="math-display">7/8</span>' },
+                        { ar: '<span class="math-display">1/8</span>', en: '<span class="math-display">1/8</span>' },
+                        { ar: '<span class="math-display">1/2</span>', en: '<span class="math-display">1/2</span>' },
+                        { ar: '<span class="math-display">3/8</span>', en: '<span class="math-display">3/8</span>' }
+                    ],
+                    correct: 0,
+                    answer: { ar: 'P(3 صور) = (1/2)³ = 1/8. P(ليس 3 صور) = 1 - 1/8 = 7/8', en: 'P(3 heads) = (1/2)³ = 1/8. P(not 3 heads) = 1 - 1/8 = 7/8' }
+                },
+                {
+                    q: { ar: '<strong>س23:</strong> في فصل 30 طالباً، 18 نجحوا. ما احتمال اختيار طالب لم ينجح؟', en: '<strong>Q23:</strong> In class of 30 students, 18 passed. What is probability of choosing student who did not pass?' },
+                    options: [
+                        { ar: '<span class="math-display">12/30 = 2/5</span>', en: '<span class="math-display">12/30 = 2/5</span>' },
+                        { ar: '<span class="math-display">18/30 = 3/5</span>', en: '<span class="math-display">18/30 = 3/5</span>' },
+                        { ar: '<span class="math-display">1/30</span>', en: '<span class="math-display">1/30</span>' },
+                        { ar: '<span class="math-display">1/2</span>', en: '<span class="math-display">1/2</span>' }
+                    ],
+                    correct: 0,
+                    answer: { ar: 'لم ينجح = 30-18 = 12. P = 12/30 = 2/5', en: 'Did not pass = 30-18 = 12. P = 12/30 = 2/5' }
+                },
+                {
+                    q: { ar: '<strong>س24:</strong> P(A∪B) = 0.7, P(A) = 0.4, P(B) = 0.5. ما P(A∩B)؟', en: '<strong>Q24:</strong> P(A∪B) = 0.7, P(A) = 0.4, P(B) = 0.5. What is P(A∩B)?' },
+                    options: [
+                        { ar: '<span class="math-display">0.2</span>', en: '<span class="math-display">0.2</span>' },
+                        { ar: '<span class="math-display">0.9</span>', en: '<span class="math-display">0.9</span>' },
+                        { ar: '<span class="math-display">0.3</span>', en: '<span class="math-display">0.3</span>' },
+                        { ar: '<span class="math-display">0.1</span>', en: '<span class="math-display">0.1</span>' }
+                    ],
+                    correct: 0,
+                    answer: { ar: 'P(A∩B) = P(A) + P(B) - P(A∪B) = 0.4 + 0.5 - 0.7 = 0.2', en: 'P(A∩B) = 0.4 + 0.5 - 0.7 = 0.2' }
+                },
+                {
+                    q: { ar: '<strong>س25:</strong> سحب بطاقة من 52. ما احتمال أن تكون ليست صورة (J, Q, K)؟', en: '<strong>Q25:</strong> Draw card from 52. What is probability it is NOT a face card (J, Q, K)?' },
+                    options: [
+                        { ar: '<span class="math-display">40/52 = 10/13</span>', en: '<span class="math-display">40/52 = 10/13</span>' },
+                        { ar: '<span class="math-display">12/52 = 3/13</span>', en: '<span class="math-display">12/52 = 3/13</span>' },
+                        { ar: '<span class="math-display">1/4</span>', en: '<span class="math-display">1/4</span>' },
+                        { ar: '<span class="math-display">3/4</span>', en: '<span class="math-display">3/4</span>' }
+                    ],
+                    correct: 0,
+                    answer: { ar: 'عدد الصور = 12 (J,Q,K في 4 أشكال). P(صورة) = 12/52 = 3/13. P(ليست صورة) = 1 - 3/13 = 10/13', en: 'Face cards = 12. P(face) = 12/52 = 3/13. P(not face) = 1 - 3/13 = 10/13' }
+                }
+            ]
+        }
+    ]
+};
+
+function shuffleArray(array) {
+    const arr = [...array];
+    for (let i = arr.length - 1; i > 0; i--) {
+        const j = Math.floor(rng() * (i + 1));
+        [arr[i], arr[j]] = [arr[j], arr[i]];
+    }
+    return arr;
+}
+
+function prepareShuffledExam() {
+    rng = mulberry32(currentSeed);
+    examData = JSON.parse(JSON.stringify(originalExamData));
+    correctAnswersMap = {};
+    let globalIdx = 0;
+    examData.sections.forEach((section) => {
+        section.questions = shuffleArray(section.questions);
+        section.questions.forEach((q) => {
+            const optionsWithCorrect = q.options.map((opt, idx) => ({ option: opt, isCorrect: idx === q.correct }));
+            const shuffledOptions = shuffleArray(optionsWithCorrect);
+            q.options = shuffledOptions.map(o => o.option);
+            q.correct = shuffledOptions.findIndex(o => o.isCorrect);
+            correctAnswersMap[globalIdx] = String.fromCharCode(97 + q.correct);
+            globalIdx++;
+        });
+    });
+}
+
+function reshuffleExam() {
+    const msg = currentLang === 'ar' ? '🔄 سيتم إنشاء أسئلة جديدة ومسح إجاباتك. هل أنت متأكد؟' : '🔄 New questions will be generated. Are you sure?';
+    if (confirm(msg)) {
+        currentSeed = Date.now(); timeRemaining = TOTAL_TIME; answersVisible = false;
+        prepareShuffledExam(); renderExam(); saveState();
+        alert(currentLang === 'ar' ? '🎲 تم تغيير الأسئلة! حظاً موفقاً! 🍀' : '🎲 Questions changed! Good luck! 🍀');
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+}
+
+function setLanguage(lang) {
+    currentLang = lang;
+    document.documentElement.lang = lang;
+    document.documentElement.dir = lang === 'ar' ? 'rtl' : 'ltr';
+    document.getElementById('btn-ar').classList.toggle('active', lang === 'ar');
+    document.getElementById('btn-en').classList.toggle('active', lang === 'en');
+    document.body.classList.toggle('en-mode', lang === 'en');
+    renderExam(); saveState(false);
+}
+
+function renderExam() {
+    const container = document.getElementById('exam-content');
+    const labels = { ar: { option: ['أ', 'ب', 'ج', 'د'], answer: '✅ الإجابة:' }, en: { option: ['A', 'B', 'C', 'D'], answer: '✅ Answer:' } };
+    const lbl = labels[currentLang];
+    let html = '';
+    let globalIdx = 0;
+    
+    examData.sections.forEach((section, secIdx) => {
+        const badgeClass = ['module-1', 'module-2', 'module-3', 'module-4', 'module-5'][secIdx];
+        html += '<section class="bg-white p-6 rounded-2xl shadow-lg border-2 border-blue-100">';
+        html += '<div class="text-center mb-4"><span class="module-badge ' + badgeClass + '">' + section.title[currentLang] + '</span></div>';
+        html += '<ol class="space-y-4 text-sm">';
+        
+        section.questions.forEach((q) => {
+            html += '<li class="border-r-4 border-blue-400 pr-4 py-2" id="q-' + globalIdx + '">';
+            html += '<strong class="text-blue-700">' + (globalIdx + 1) + '.</strong> ' + q.q[currentLang] + '<br>';
+            if (q.svg) html += '<div class="graph-container">' + q.svg + '</div>';
+            
+            q.options.forEach((opt, oIdx) => {
+                html += '<label class="cursor-pointer block mt-2 mr-4 hover:bg-blue-50 rounded-lg p-2 transition">';
+                html += '<input type="radio" name="q' + globalIdx + '" value="' + String.fromCharCode(97 + oIdx) + '" class="mr-2 ml-2">';
+                html += '<span class="arabic-math">' + lbl.option[oIdx] + ') ' + opt[currentLang] + '</span>';
+                html += '</label>';
+            });
+            
+            html += '<div class="answer-box text-green-700 mt-3 font-medium ' + (answersVisible ? '' : 'hidden') + ' bg-green-50 rounded-lg p-3 border border-green-200">';
+            html += lbl.answer + ' ' + lbl.option[q.correct] + ') <span class="arabic-math">' + q.options[q.correct][currentLang] + '</span><br>';
+            html += '<span class="text-sm text-green-700 mt-2 block arabic-math">' + q.answer[currentLang] + '</span>';
+            html += '</div></li>';
+            globalIdx++;
+        });
+        
+        html += '</ol></section>';
+    });
+    
+    container.innerHTML = html;
+}
+
+function startTimer() {
+    updateTimerDisplay();
+    timerInterval = setInterval(() => {
+        timeRemaining--;
+        updateTimerDisplay();
+        if (timeRemaining % 60 === 0) saveState(false);
+        if (timeRemaining <= 600) document.getElementById('timer').classList.add('timer-warning');
+        if (timeRemaining <= 0) {
+            clearInterval(timerInterval);
+            alert(currentLang === 'ar' ? "⏰ انتهى الوقت!" : "⏰ Time's up!");
+            gradeExam();
+        }
+    }, 1000);
+}
+
+function updateTimerDisplay() {
+    const m = Math.floor(timeRemaining / 60);
+    const s = timeRemaining % 60;
+    document.getElementById('timer').textContent = m.toString().padStart(2,'0') + ':' + s.toString().padStart(2,'0');
+}
+
+function toggleAnswers() {
+    answersVisible = !answersVisible;
+    document.querySelectorAll('.answer-box').forEach(el => el.classList.toggle('hidden', !answersVisible));
+    saveState(false);
+}
+
+function gradeExam() {
+    let correctCount = 0;
+    const sectionScores = new Array(TOTAL_SECTIONS).fill(0);
+    
+    for (let i = 0; i < TOTAL_QUESTIONS; i++) {
+        const sel = document.querySelector('input[name="q'+i+'"]:checked');
+        const li = document.getElementById('q-' + i);
+        if (li) {
+            const isCorrect = sel && sel.value === correctAnswersMap[i];
+            if (isCorrect) {
+                correctCount++;
+                li.classList.add('correct');
+                li.classList.remove('incorrect');
+                sectionScores[Math.floor(i / QUESTIONS_PER_SECTION)]++;
+            } else {
+                li.classList.add('incorrect');
+                li.classList.remove('correct');
+            }
+        }
+    }
+    
+    const score = Math.round((correctCount / TOTAL_QUESTIONS) * 100);
+    document.getElementById('res-total').textContent = score + ' / 100';
+    document.getElementById('res-name').textContent = document.getElementById('studentName').value || (currentLang === 'ar' ? 'بطل' : 'Champion');
+    document.getElementById('res-date').textContent = new Date().toLocaleDateString(currentLang === 'ar' ? 'ar-AE' : 'en-US');
+    
+    const pc = document.getElementById('sections-performance');
+    pc.innerHTML = '';
+    examData.sections.forEach((s, idx) => {
+        pc.innerHTML += '<div class="flex justify-between items-center p-3 bg-white rounded-lg"><span class="text-gray-700">' + s.title[currentLang] + '</span><span class="font-bold text-blue-700">' + sectionScores[idx] + '/' + QUESTIONS_PER_SECTION + '</span></div>';
+    });
+    
+    const badge = document.getElementById('success-badge');
+    document.getElementById('success-percent').textContent = score + '%';
+    
+    if (currentLang === 'ar') {
+        if (score >= 90) { badge.textContent = '🌟 ممتاز جداً!'; badge.className = 'success-badge grade-excellent'; }
+        else if (score >= 75) { badge.textContent = '👏 ممتاز!'; badge.className = 'success-badge grade-good'; }
+        else if (score >= 50) { badge.textContent = '👍 جيد'; badge.className = 'success-badge grade-pass'; }
+        else { badge.textContent = '💪 حاول مرة أخرى'; badge.className = 'success-badge grade-fail'; }
+    } else {
+        if (score >= 90) { badge.textContent = '🌟 Outstanding!'; badge.className = 'success-badge grade-excellent'; }
+        else if (score >= 75) { badge.textContent = '👏 Excellent!'; badge.className = 'success-badge grade-good'; }
+        else if (score >= 50) { badge.textContent = '👍 Good'; badge.className = 'success-badge grade-pass'; }
+        else { badge.textContent = '💪 Try Again'; badge.className = 'success-badge grade-fail'; }
+    }
+    
+    document.getElementById('results-panel').classList.remove('hidden');
+    document.getElementById('results-panel').scrollIntoView({ behavior: 'smooth' });
+    if (timerInterval) clearInterval(timerInterval);
+}
+
+function sendResultsToEmail() {
+    const btn = document.getElementById('sendEmailBtn');
+    const status = document.getElementById('emailStatus');
+    btn.disabled = true;
+    btn.textContent = currentLang === 'ar' ? '⏳ جاري الإرسال...' : '⏳ Sending...';
+    
+    const name = document.getElementById('studentName').value || 'غير محدد';
+    const studentClass = document.getElementById('studentClass').value || 'غير محدد';
+    const date = document.getElementById('examDate').value || new Date().toLocaleDateString();
+    const score = document.getElementById('res-total').textContent;
+    const successRate = document.getElementById('success-percent').textContent;
+    const badge = document.getElementById('success-badge').textContent;
+    
+    let questionsHTML = '<div style="font-family:Arial; direction:rtl;">';
+    questionsHTML += '<h2>📊 ' + (currentLang === 'ar' ? 'نتيجة امتحان الاحتمالات' : 'Probability Exam Result') + '</h2>';
+    questionsHTML += '<p><strong>' + (currentLang === 'ar' ? 'الاسم' : 'Name') + ':</strong> ' + name + '</p>';
+    questionsHTML += '<p><strong>' + (currentLang === 'ar' ? 'الشعبة' : 'Class') + ':</strong> ' + studentClass + '</p>';
+    questionsHTML += '<p><strong>' + (currentLang === 'ar' ? 'التاريخ' : 'Date') + ':</strong> ' + date + '</p>';
+    questionsHTML += '<p><strong>' + (currentLang === 'ar' ? 'الدرجة' : 'Score') + ':</strong> ' + score + ' (' + successRate + '%)</p>';
+    questionsHTML += '<p><strong>' + (currentLang === 'ar' ? 'التقدير' : 'Grade') + ':</strong> ' + badge + '</p>';
+    questionsHTML += '<hr><h3>' + (currentLang === 'ar' ? 'تفاصيل الإجابات:' : 'Answer Details:') + '</h3><table style="width:100%; border-collapse:collapse;">';
+    questionsHTML += '<tr style="background:#2563eb; color:white;"><th style="padding:8px; border:1px solid #ddd;">#</th><th style="padding:8px; border:1px solid #ddd;">' + (currentLang === 'ar' ? 'السؤال' : 'Question') + '</th><th style="padding:8px; border:1px solid #ddd;">' + (currentLang === 'ar' ? 'إجابة الطالب' : 'Student Answer') + '</th><th style="padding:8px; border:1px solid #ddd;">' + (currentLang === 'ar' ? 'الصحيحة' : 'Correct') + '</th><th style="padding:8px; border:1px solid #ddd;">' + (currentLang === 'ar' ? 'النتيجة' : 'Result') + '</th></tr>';
+    
+    let globalIdx = 0;
+    examData.sections.forEach((section) => {
+        questionsHTML += '<tr style="background:#dbeafe;"><td colspan="5" style="padding:8px; font-weight:bold; border:1px solid #ddd;">' + section.title.ar + '</td></tr>';
+        section.questions.forEach((q) => {
+            const sel = document.querySelector('input[name="q'+globalIdx+'"]:checked');
+            const sv = sel ? sel.value : null;
+            const cv = correctAnswersMap[globalIdx];
+            const ic = sv === cv;
+            let sat = currentLang === 'ar' ? '❌ لم يجب' : '❌ No answer';
+            let sac = '#dc2626';
+            if (sv) {
+                const si = sv.charCodeAt(0) - 97;
+                sat = q.options[si][currentLang];
+                sac = ic ? '#16a34a' : '#dc2626';
+            }
+            const cat = q.options[q.correct][currentLang];
+            const rb = ic ? '#f0fdf4' : '#fef2f2';
+            questionsHTML += '<tr style="background:' + rb + ';"><td style="padding:8px; border:1px solid #ddd; text-align:center;">' + (globalIdx+1) + '</td><td style="padding:8px; border:1px solid #ddd;">' + q.q.ar + '</td><td style="padding:8px; border:1px solid #ddd; color:' + sac + ';">' + sat + '</td><td style="padding:8px; border:1px solid #ddd; color:#16a34a;">' + cat + '</td><td style="padding:8px; border:1px solid #ddd; text-align:center;">' + (ic?'✅':'❌') + '</td></tr>';
+            globalIdx++;
+        });
+    });
+    questionsHTML += '</table></div>';
+    
+    const templateParams = {
+        to_email: TARGET_EMAIL,
+        student_name: name,
+        student_class: studentClass,
+        exam_date: date,
+        total_score: score,
+        success_rate: successRate,
+        grade: badge,
+        answers_table: questionsHTML
+    };
+    
+    emailjs.send(SERVICE_ID, TEMPLATE_ID, templateParams)
+        .then(() => {
+            status.textContent = currentLang === 'ar' ? '✅ تم الإرسال بنجاح!' : '✅ Sent successfully!';
+            status.style.color = '#16a34a';
+            btn.textContent = currentLang === 'ar' ? '✓ تم' : '✓ Sent';
+            alert(currentLang === 'ar' ? 'تم إرسال النتيجة للمعلم بنجاح!' : 'Result sent to teacher successfully!');
+        })
+        .catch((error) => {
+            status.textContent = currentLang === 'ar' ? '❌ فشل الإرسال' : '❌ Failed to send';
+            status.style.color = '#dc2626';
+            btn.disabled = false;
+            btn.textContent = currentLang === 'ar' ? '📧 حاول مرة أخرى' : '📧 Try Again';
+            alert(currentLang === 'ar' ? 'فشل الإرسال: ' + error.text : 'Failed: ' + error.text);
+        });
+}
+
+window.addEventListener('DOMContentLoaded', () => {
+    const saved = loadState();
+    if (saved && saved.seed) {
+        currentSeed = saved.seed;
+        currentLang = saved.lang || 'ar';
+        timeRemaining = saved.timeRemaining !== undefined ? saved.timeRemaining : TOTAL_TIME;
+        answersVisible = saved.answersVisible || false;
+        document.getElementById('btn-ar').classList.toggle('active', currentLang === 'ar');
+        document.getElementById('btn-en').classList.toggle('active', currentLang === 'en');
+        document.body.classList.toggle('en-mode', currentLang === 'en');
+    } else {
+        currentSeed = Date.now();
+    }
+    prepareShuffledExam();
+    renderExam();
+    if (saved) {
+        if (saved.studentName) document.getElementById('studentName').value = saved.studentName;
+        if (saved.studentClass) document.getElementById('studentClass').value = saved.studentClass;
+        if (saved.examDate) document.getElementById('examDate').value = saved.examDate;
+        if (saved.answers) restoreAnswers(saved.answers);
+    }
+    setupAnswerListeners();
+    setupInputListeners();
+    startTimer();
+});
+window.addEventListener('beforeunload', () => saveState(false));
+</script>
+</body>
+</html>
